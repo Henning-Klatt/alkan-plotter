@@ -16,47 +16,38 @@ def make_frame(t):
     #return scene.render("test.png", width=1024, height=512, antialiasing = 0.01, quality=100)
     return make_scene(t, 1).render(width=1024, height=512, antialiasing = 0.01, quality=100)
 
-def render(data, length, shrink, x, y, z):
+def render(data, length, shrink, empty, x, y, z):
     if isinstance(data, list):
         obj.append(Sphere([x, y, z], 2, Texture(Pigment('color', [0.1,0.1,0.1])))) # Create C node
-        createC(x,y,z)
         for i,item in enumerate(data): # Create New nodes around C
-            if len(data) == 3:
-                if i == 2:
-                    x_new = x + length; y_new = y
-                    len_new = length
-                elif i == 1:
-                    x_new = x; y_new = y + length
-                    len_new = length - shrink
-                elif i == 0:
-                    x_new = x; y_new = y - length
-                    len_new = length - shrink
-            if len(data) == 4:
-                if i == 3:
-                    x_new = x + length; y_new = y
-                    len_new = length
-                elif i == 2:
-                    x_new = x - length; y_new = y
-                    len_new = -length
-                elif i == 1:
-                    x_new = x; y_new = y + length
-                    len_new = length - shrink
-                elif i == 0:
-                    x_new = x; y_new = y - length
-                    len_new = length - shrink
-            obj.append(Cylinder([x,y,z], render(item, len_new, shrink, x_new, y_new, z), 0.3, Finish('ambient', 0.1, 'diffuse', 0.7), Pigment('color', [0.4,0.4,0.4])))
+            [x_new, y_new, len_new, empty_new] = direct(len(data), length, shrink, empty, i, x, y, z)
+            obj.append(Cylinder([x,y,z], render(item, len_new, shrink, empty_new, x_new, y_new, z), 0.3, Finish('ambient', 0.1, 'diffuse', 0.7), Pigment('color', [0.4,0.4,0.4])))
     elif data == 'h': # Create new h node
         obj.append(Sphere([x, y, z], 2, Texture(Pigment('color', [0.9,0.9,0.9]))))#White color
-        createh(x,y,z)
     return [x,y,z]
 
-def createC(x,y,z):
-    print("c: " + str(x) + " " + str(y) + " " + str(z))
+# Empty: 0 = left; 1 = up; 2 = right; 3 = down
+def direct(datasize, length, shrink, empty, i, x, y, z):
+    if datasize != 0:
+        if (i + empty) % 4 == 2:
+            x_new = x + length; y_new = y
+            len_new = length
+            empty = 0 #Tested
+        elif (i + empty) % 4 == 1:
+            x_new = x; y_new = y + length
+            len_new = length - shrink
+            empty = 1 #Tested
+        elif (i + empty) % 4 == 0: # Evtl swap with under
+            x_new = x; y_new = y - length
+            len_new = length - shrink
+            empty = 2 #Tested
+        elif (i + empty) % 4 == 3:
+            x_new = x - length; y_new = y
+            len_new = -length
+            empty = 0 #2
+    return [x_new, y_new, len_new, empty]
 
-def createh(x,y,z):
-    print("h: " + str(x) + " " + str(y) + " " + str(z))
-
-render(data, 10, 7,  0, 0, 0)
+render(data, 15, 10, -1, 0, 0, 0)
 
 obj.append(LightSource( [10, 120, -40], 'color', [1.3, 1.3, 1.3]))
 obj.append(Background("color", [1,1,1]))
