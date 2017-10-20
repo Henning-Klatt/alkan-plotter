@@ -9,7 +9,7 @@ with open('json-easy.json') as data_file:
 obj = []
 
 def make_scene(t, x):
-    camera = Camera( 'location', [t*20,20,-x/1.5], 'look_at', [x/2,5,0])
+    camera = Camera( 'location', [20,20,-40], 'look_at', [0,0,0])
     return Scene( camera, objects= obj, included=["glass.inc"])
 
 def make_frame(t):
@@ -52,6 +52,4 @@ ground = Plane( [0, 1, 0], 0,
                                  'reflection',0.4,
                                  'metallic', 0.3)))
 
-VideoClip(make_frame, duration=2).write_gif("anim.gif",fps=20)
-
-
+VideoClip(make_frame, duration=1).write_gif("anim.gif",fps=1)
