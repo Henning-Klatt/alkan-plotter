@@ -30,7 +30,7 @@ def render(data, length, x, y, z):
                 new_lenght = length
             obj.append(Cylinder([x,y,z], render(item, new_length, new_x, new_y, z), 0.3, Finish('ambient', 0.1, 'diffuse', 0.7), Pigment('color', [0.4,0.4,0.4])))
     elif data == 'h': # Create new h node
-        obj.append(Sphere([x, y, z], 2, Texture(Pigment('color', [0.1,0.1,0.1]))))
+        obj.append(Sphere([x, y, z], 2, Texture(Pigment('color', [0.9,0.9,0.9]))))#White color
         createh(x,y,z)
     return [x,y,z]
 
