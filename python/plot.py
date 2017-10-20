@@ -4,13 +4,10 @@ from moviepy.editor import VideoClip
 import json
 import tweepy
 import numpy as np
-import math
+import math, os
 from math import pi
 from credentials import *
-
-auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
-auth.set_access_token(access_token, access_token_secret)
-api = tweepy.API(auth)
+from convertBytes import convert_bytes
 
 with open('data.json') as data_file:
     data = json.load(data_file)
@@ -99,4 +96,10 @@ obj.append(LightSource( [10, 120, -40], 'color', [1.3, 1.3, 1.3]))
 obj.append(Background("color", [1,1,1]))
 
 VideoClip(make_frame, duration=lange).write_gif("animation.gif",fps=25)
+size = convert_bytes(os.stat("animation.gif").st_size)
+print("Dateigröße: " + size)
+
+auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+auth.set_access_token(access_token, access_token_secret)
+api = tweepy.API(auth)
 api.update_with_media("animation.gif", "Haskell Foreign Function Interface fehlt. lol.")
