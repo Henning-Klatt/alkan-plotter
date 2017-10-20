@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# coding: utf8
 from vapory import *
 from moviepy.editor import VideoClip
 import json
