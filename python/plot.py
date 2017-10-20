@@ -15,7 +15,7 @@ api = tweepy.API(auth)
 with open('data.json') as data_file:
     data = json.load(data_file)
 
-lange = 2 #sek. Länge der gif !!! must be int !!!
+lange = 3 #sek. Länge der gif !!! must be int !!!
 obj = []
 x_cam = []
 y_cam = []
@@ -39,8 +39,8 @@ def generate_circle(center=(0,0,0), r=50, n=100):
     return [
         (
             center[0] + (math.cos(2 * pi / n * x) * r),  # x
-            center[1] + (math.sin(2 * pi / n * x) * r),  # z
-            center[2]# + (math.sin(2 * pi / n * x) * r)   # y
+            center[1] + (math.sin(2 * pi / n * x) * r),  # y
+            center[2] + (math.cos(2 * pi / n * x) * r)   # z
 
         ) for x in range(0, n + 1)]
 
@@ -99,4 +99,4 @@ obj.append(LightSource( [10, 120, -40], 'color', [1.3, 1.3, 1.3]))
 obj.append(Background("color", [1,1,1]))
 
 VideoClip(make_frame, duration=lange).write_gif("animation.gif",fps=25)
-#api.update_with_media("animation.gif", "Haskell Foreign Function Interface fehlt. lol.")
+api.update_with_media("animation.gif", "Haskell Foreign Function Interface fehlt. lol.")
