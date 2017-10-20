@@ -97,7 +97,7 @@ obj.append(Background("color", [1,1,1]))
 
 VideoClip(make_frame, duration=lange).write_gif("animation.gif",fps=25)
 size = convert_bytes(os.stat("animation.gif").st_size)
-print("Dateigröße: " + size)
+print("Filesize: " + size)
 
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
