@@ -3,7 +3,7 @@ import json
 from pprint import pprint
 from moviepy.editor import VideoClip
 
-with open('data.json') as data_file:
+with open('json-easy.json') as data_file:
     data = json.load(data_file)
 
 obj = []
@@ -18,24 +18,29 @@ def make_frame(t):
 
 def render(data, length, x, y, z):
     if isinstance(data, list):
-        print("X: " + str(x) + " Y: " + str(y) + " Z: " + str(z))
-        obj.append(Sphere([x, y, z], 2, Texture(Pigment('color', [0.1,0.1,0.1]))))
-        for i,item in enumerate(data):
-            if i == 0 or i == 1:
-                new_y = (x + length) * (-i); new_x = x
+        obj.append(Sphere([x, y, z], 2, Texture(Pigment('color', [0.1,0.1,0.1])))) # Create C node
+        createC(x,y,z)
+        multiply = [-1,1,1,1]
+        for i,item in enumerate(data): # Create New nodes around C
+            if i == 1 or i == 0:
+                new_y = (y + length) * multiply[i]; new_x = x
+                new_length = length - 1
             else:
-                new_y = y; new_x = x + length
-            print("X: " + str(x) + " Y: " + str(y) + " Z: " + str(z))
-            obj.append(Cylinder((x,y,z), (x+1,y+1,z), 0.3, Finish('ambient', 0.1, 'diffuse', 0.7), Pigment('color', [0.4,0.4,0.4]))) # Das wurde verändert :D
-
-    elif data == 'h':
+                new_y = y; new_x = (x + length) * multiply[i]
+                new_lenght = length
+            obj.append(Cylinder([x,y,z], render(item, new_length, new_x, new_y, z), 0.3, Finish('ambient', 0.1, 'diffuse', 0.7), Pigment('color', [0.4,0.4,0.4])))
+    elif data == 'h': # Create new h node
         obj.append(Sphere([x, y, z], 2, Texture(Pigment('color', [0.1,0.1,0.1]))))
-        print("X: " + str(x) + " Y: " + str(y) + " Z: " + str(z))
-    else:
-        raise ValueError
+        createh(x,y,z)
     return [x,y,z]
 
-render(data, 100, 0, 0, 0)
+def createC(x,y,z):
+    print("c: " + str(x) + " " + str(y) + " " + str(z))
+
+def createh(x,y,z):
+    print("h: " + str(x) + " " + str(y) + " " + str(z))
+
+render(data, 10, 0, 0, 0)
 
 obj.append(LightSource( [10, 120, -40], 'color', [1.3, 1.3, 1.3]))
 obj.append(Background("color", [1,1,1]))
@@ -48,3 +53,5 @@ ground = Plane( [0, 1, 0], 0,
                                  'metallic', 0.3)))
 
 VideoClip(make_frame, duration=2).write_gif("anim.gif",fps=20)
+
+
