@@ -18,15 +18,19 @@ def make_frame(t):
 
 def render(data, length, x, y, z):
     if isinstance(data, list):
+        print("X: " + str(x) + " Y: " + str(y) + " Z: " + str(z))
         obj.append(Sphere([x, y, z], 2, Texture(Pigment('color', [0.1,0.1,0.1]))))
         for i,item in enumerate(data):
             if i == 0 or i == 1:
                 new_y = (x + length) * (-i); new_x = x
             else:
                 new_y = y; new_x = x + length
+            print("X: " + str(x) + " Y: " + str(y) + " Z: " + str(z))
             obj.append(Cylinder([x,y,z], render(item, length, new_x, new_y, z), 0.3, Finish('ambient', 0.1, 'diffuse', 0.7), Pigment('color', [0.4,0.4,0.4]))) # Das muss verändert werden xD
+
     elif data == 'h':
         obj.append(Sphere([x, y, z], 2, Texture(Pigment('color', [0.1,0.1,0.1]))))
+        print("X: " + str(x) + " Y: " + str(y) + " Z: " + str(z))
     else:
         raise ValueError
     return [x,y,z]
@@ -44,5 +48,3 @@ ground = Plane( [0, 1, 0], 0,
                                  'metallic', 0.3)))
 
 VideoClip(make_frame, duration=2).write_gif("anim.gif",fps=20)
-
-
