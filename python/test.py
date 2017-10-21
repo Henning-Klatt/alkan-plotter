@@ -2,10 +2,15 @@ from vapory import *
 import json
 from pprint import pprint
 from moviepy.editor import VideoClip
+import os
 
-with open('data.json') as data_file:
-    data = json.load(data_file)
+def backend(len, dep):
+    os.chdir('../HcPlot-hs')
+    os.system('stack build')
+    os.system('stack exec create ' + str(len) + ' ' + str(dep))
+    os.chdir('../python')
 
+data = backend(3,3)
 obj = []
 
 def make_scene(t, x):

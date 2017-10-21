@@ -10,8 +10,14 @@ from math import pi
 from credentials import *
 from convertBytes import convert_bytes
 
-with open('data.json') as data_file:
-    data = json.load(data_file)
+
+def backend(len, dep):
+    os.chdir('../HcPlot-hs')
+    os.system('stack build')
+    os.system('stack exec create ' + str(len) + ' ' + str(dep))
+    os.chdir('../python')
+
+data = backend(5, 2)
 
 lange = 3 #sek. Länge der gif !!! must be int !!!
 obj = []
@@ -103,4 +109,4 @@ print("Filesize: " + size)
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
 api = tweepy.API(auth)
-api.update_with_media("animation.gif", "Haskell Foreign Function Interface fehlt. lol.")
+api.update_with_media("animation.gif", "Es fehlt noch: Name und Randomness")
