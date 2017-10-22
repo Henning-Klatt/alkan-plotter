@@ -14,7 +14,8 @@ from convertBytes import convert_bytes
 def backend(len, dep):
     os.chdir('../HcPlot-hs')
     os.system('stack build')
-    data = os.popen('stack exec create ' + str(len) + ' ' + str(dep)).read()
+    os.system('stack exec create ' + str(len) + ' ' + str(dep) + ' > data')
+    data = open('data', 'r').read()#os.popen('stack exec create ' + str(len) + ' ' + str(dep)).read()
     os.chdir('../python')
     return data
 
