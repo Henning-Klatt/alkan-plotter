@@ -18,6 +18,7 @@ def backend(len, dep):
     os.chdir('../python')
 
 data = backend(5, 2)
+print("Data: " + str(data))
 
 lange = 3 #sek. Länge der gif !!! must be int !!!
 obj = []
