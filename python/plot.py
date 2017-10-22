@@ -17,7 +17,7 @@ def backend(len, dep):
     #os.system('stack exec create ' + str(len) + ' ' + str(dep) + ' > data')
     data = os.popen('stack exec create ' + str(len) + ' ' + str(dep)).read()
     os.chdir('../python')
-    return json.load(data)
+    return json.loads(data)
 
 data = backend(5, 2)
 print("Data: " + str(data))
