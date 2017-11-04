@@ -15,6 +15,7 @@ library
   hs-source-dirs:      src
   exposed-modules:     HcPlot
   other-modules:       HcPlot.Names
+                       HcPlot.Molecule
   default-language:    Haskell2010
   ghc-options:         -Wall
   build-depends:       base >= 4.7 && < 5
@@ -22,11 +23,10 @@ library
                      , split
 
 executable create
-  hs-source-dirs:      src
+  hs-source-dirs:      src/exe
   main-is:             Main.hs
   ghc-options:         -Wall
   build-depends:       base >= 4.7 && < 5
                      , QuickCheck
-  other-modules:       HcPlot
-                     , HcPlot.Names
+                     , HcPlot-hs
   default-language:    Haskell2010
