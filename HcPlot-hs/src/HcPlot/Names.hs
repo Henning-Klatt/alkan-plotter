@@ -9,6 +9,7 @@ module HcPlot.Names
     ) where
 
 import Data.List
+import Data.Maybe
 
 getNames :: Int -> String
 getNames x = names !! (x-1)
@@ -37,7 +38,12 @@ lengthToPrefix = (!!) prefixes . subtract 1
 
 {-| Strip a prefix from a given string |-}
 stripNamePrefix :: String -> Maybe String
-stripNamePrefix str = flip (!!) 0 . filter (/= Nothing) . zipWith stripPrefix prefixes $ (repeat str)
+stripNamePrefix str =
+    case catMaybes zipL of
+        [] -> Nothing
+        (x:_) -> Just x
+    where
+        zipL = zipWith stripPrefix prefixes $ (repeat str)
 
 {-| Strips a suffix (either "yl" or "an") from a name |-}
 stripSuffix :: String -> String
