@@ -14,12 +14,12 @@ extra-source-files:  README.md
 library
   hs-source-dirs:      src
   exposed-modules:     HcPlot
-  other-modules:       HcPlot.Names
-                       HcPlot.Molecule
+                     , HcPlot.Molecule
+                     , HcPlot.Names
   default-language:    Haskell2010
   ghc-options:         -Wall
   build-depends:       base >= 4.7 && < 5
-                     , QuickCheck
+                     , random
                      , split
 
 executable create

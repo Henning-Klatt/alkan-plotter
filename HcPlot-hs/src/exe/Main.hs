@@ -1,9 +1,13 @@
 module Main where
 
-import HcPlot
+import HcPlot.Molecule
 import System.Environment
 
 main :: IO ()
 main = do
     args <- getArgs
-    return ()
+    if args !! 0 == "r"
+       then undefined
+       else if args !! 0 == "n"
+               then putStrLn . show $ nameToMolecule (args !! 1)
+               else putStrLn ""

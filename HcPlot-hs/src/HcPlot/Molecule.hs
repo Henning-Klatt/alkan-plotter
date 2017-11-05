@@ -1,6 +1,9 @@
 module HcPlot.Molecule
     ( nameToMolecule
+    , locationsToString
+    , stringToLocations
     , Molecule ()
+    , SideChainInformation
     ) where
 
 import Data.List.Split
@@ -18,6 +21,16 @@ instance Show Molecule where
     show (C a b c)     = "[" ++ show a ++ "," ++ show b ++ "," ++ show c ++ "]"
     show H             = "\"" ++ "h" ++ "\""
 
+showLocations :: SideChainInformation -> String
+showLocations [] = ""
+showLocations (x:xs) =
+    case snd x of
+        Right y -> numbers ++ "-" ++ prefix ++ lengthToName y ++ "yl" ++ "-"
+        Left y  -> numbers ++ "-" ++ "(" ++ y ++ ")" ++ showLocations xs ++ "-"
+     where
+         prefix = lengthToPrefix . length . fst $ x
+         numbers = tail . init . show $ fst x
+
 {-| Make a chain longer |-}
 liftMolecule :: Molecule -> Molecule
 liftMolecule (C a b c) = Int H a b c
@@ -31,10 +44,13 @@ nameToMolecule = liftMolecule . nameToChain
 {-| Create a chain from a name |-}
 nameToChain :: String -> Molecule
 nameToChain str = constructMolecule $ mainLength
-    where (sideChains, mainLength) = stringToTuples str
+    where (sideChains, mainLength) = stringToLocations str
           constructMolecule len
               | len == 0  = H
               | otherwise = (uncurry C) (findInLocations sideChains len) (constructMolecule (len-1))
+
+locationsToString :: (SideChainInformation, Int) -> String
+locationsToString (loc, len) = showLocations loc ++ lengthToName len ++ "an"
 
 {-| Create normal chain of length x |-}
 createLinearChain :: Int -> Molecule
@@ -52,8 +68,8 @@ findInLocations (x:xs) pos
     | otherwise          = findInLocations xs (pos-1)
 
 {-| Get the SideChainInformation and the lenght of the main chain of a given name |-}
-stringToTuples :: String -> (SideChainInformation, Int)
-stringToTuples str = (map toNumbers lenNameTuple, nameToLength . concat  $ len)
+stringToLocations :: String -> (SideChainInformation, Int)
+stringToLocations str = (map toNumbers lenNameTuple, nameToLength . concat  $ len)
     where
         s               = splitString str
         (loc, len)      = splitAt (length s - 1) s

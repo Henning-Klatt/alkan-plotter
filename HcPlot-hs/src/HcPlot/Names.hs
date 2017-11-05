@@ -1,5 +1,5 @@
 module HcPlot.Names
-    ( getNames
+    ( lengthToName
     , nameToLength
     , nameToLength'
     , stripSuffix
@@ -11,8 +11,8 @@ module HcPlot.Names
 import Data.List
 import Data.Maybe
 
-getNames :: Int -> String
-getNames x = names !! (x-1)
+lengthToName :: Int -> String
+lengthToName x = names !! (x-1)
 
 {-| Get the length of a name with suffix |-}
 nameToLength :: String -> Int
@@ -23,7 +23,7 @@ nameToLength' :: String -> Int
 nameToLength' name =
     case elemIndex name names of
         Just x  -> (x + 1)
-        Nothing -> -1
+        Nothing -> error "Nonexistent name"
 
 {-| Convert a prefix to the corresponding number |-}
 prefixToLength :: String -> Int

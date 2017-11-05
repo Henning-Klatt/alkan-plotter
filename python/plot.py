@@ -15,9 +15,19 @@ def backend(len, dep):
     os.chdir('../HcPlot-hs')
     os.system('stack build')
     #os.system('stack exec create ' + str(len) + ' ' + str(dep) + ' > data')
-    data = os.popen('stack exec create ' + str(len) + ' ' + str(dep)).read()
+    # data = os.popen('stack exec create ' + str(len) + ' ' + str(dep)).read()
     os.chdir('../python')
     return json.loads(data)
+
+def nameToJSON(name):
+    os.chdir('../HcPlot-hs')
+    os.system('stack build')
+    data = os.popen('stack exec n ' + name)
+    os.chdir('../python')
+    try:
+        x = json.loads(data)
+    except:
+        os.exit(1)
 
 data = backend(5, 2)
 print("Data: " + str(data))
