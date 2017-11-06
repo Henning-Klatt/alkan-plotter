@@ -49,15 +49,15 @@ x_min = [0]
 y_max = [0]
 y_min = [0]
 
-def make_scene(t, center):
+def make_scene(t):
     #camera = Camera( 'location', [t*50,20,-((x_max[0]+y_max[0])/1.25)], 'look_at', [x_max[0]/2,0,0])
     t = int(t*25)
     camera = Camera( 'location', [x_cam[t],y_cam[t],z_cam[t]], 'look_at', center)
     return Scene( camera, objects= obj, included=["glass.inc"])
 
-def make_frame(t, center):
+def make_frame(t):
     #return scene.render("test.png", width=1024, height=512, antialiasing = 0.01, quality=100)
-    return make_scene(t, center).render(width=1024, height=512, antialiasing = 0.01, quality=100)
+    return make_scene(t).render(width=1024, height=512, antialiasing = 0.01, quality=100)
 
 def generate_circle(center=(0,0,0), r=50, n=100):
     return [
@@ -124,7 +124,7 @@ def plot(data):
     obj.append(LightSource( [10, 120, -40], 'color', [1.3, 1.3, 1.3]))
     obj.append(Background("color", [1,1,1]))
 
-    VideoClip(make_frame(center=center), duration=lange).write_gif("animation.gif",fps=25)
+    VideoClip(make_frame, duration=lange).write_gif("animation.gif",fps=25)
     size = convert_bytes(os.stat("animation.gif").st_size)
     print("Filesize: " + size)
 
