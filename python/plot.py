@@ -57,7 +57,8 @@ def make_scene(t):
 
 def make_frame(t):
     #return scene.render("test.png", width=1024, height=512, antialiasing = 0.01, quality=100)
-    return make_scene(t).render(width=1024, height=512, antialiasing = 0.01, quality=100)
+    center = ((x_max[0]+x_min[0])/2, (y_max[0]+y_min[0])/2, 0)
+    return make_scene(t, center).render(width=1024, height=512, antialiasing = 0.01, quality=100)
 
 def generate_circle(center=(0,0,0), r=50, n=100):
     return [
