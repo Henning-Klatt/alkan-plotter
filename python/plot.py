@@ -23,10 +23,10 @@ def nameToJSON(name):
     os.chdir('../HcPlot-hs')
     os.system('stack build')
     HSdata = os.popen('stack exec create n ' + str(name))
-    print("HS Data: " + str(data))
+    print("HS Data: " + str(HSdata))
     os.chdir('../python')
     try:
-        return json.loads(HSData)
+        return json.loads(HSdata)
     except TypeError:
         print("Fehlerhafte JSON")
         return False
