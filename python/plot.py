@@ -147,7 +147,7 @@ while running:
             data = nameToJSON(name)
             if(data):
                 plot(data)
-                api.update_with_media("animation.gif", "@" + user + " " + name, tweet.id)
+                tweet = api.update_with_media("animation.gif", "@" + user + " " + name, tweet.id)
                 running = False
             else:
                 print("Tweet ungultig!")
