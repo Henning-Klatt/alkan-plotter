@@ -11,7 +11,7 @@ from math import pi
 from credentials import *
 from convertBytes import convert_bytes
 
-sys.setdefaultencoding('utf8')
+#sys.setdefaultencoding('utf8')
 
 def backend(len, dep):
     os.chdir('../HcPlot-hs')
@@ -149,4 +149,4 @@ while running:
                 api.update_with_media("animation.gif", name)
                 running = False
             else:
-                print("Tweet ungültig!")
+                print("Tweet ungultig!")
