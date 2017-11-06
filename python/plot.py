@@ -23,6 +23,7 @@ def nameToJSON(name):
     os.chdir('../HcPlot-hs')
     os.system('stack build')
     data = os.popen('stack exec create n ' + name)
+    print("HS Data: " + str(data))
     os.chdir('../python')
     return json.loads(data)
 
