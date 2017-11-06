@@ -150,3 +150,4 @@ while running:
                 running = False
             else:
                 print("Tweet ungultig!")
+                running = False
