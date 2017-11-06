@@ -5,7 +5,7 @@ from moviepy.editor import VideoClip
 import json
 import tweepy
 import numpy as np
-import math, os
+import math, os, time
 from math import pi
 from credentials import *
 from convertBytes import convert_bytes
@@ -33,8 +33,7 @@ def nameToJSON(name):
         return False
 
 #data = backend(5, 2)
-data = nameToJSON(name)
-print("Data: " + str(data))
+
 
 lange = 3 #sek. Länge der gif !!! must be int !!!
 obj = []
@@ -104,26 +103,44 @@ def direct(datasize, length, shrink, empty, i, x, y, z):
             empty = 0 #2
     return [x_new, y_new, len_new, empty]
 
-render(data, 15, 10, -1, 0, 0, 0)
-print("X max: " + str(x_max[0]) + ", Y max: " + str(y_max[0]))
-print("Kreispunkte: " + str(lange*25+1))
-center = ((x_max[0]+x_min[0])/2, (y_max[0]+y_min[0])/2, 0)
+def plot(name):
+    data = nameToJSON(name)
+    print("Data: " + str(data))
+    render(data, 15, 10, -1, 0, 0, 0)
+    print("X max: " + str(x_max[0]) + ", Y max: " + str(y_max[0]))
+    print("Kreispunkte: " + str(lange*25+1))
+    center = ((x_max[0]+x_min[0])/2, (y_max[0]+y_min[0])/2, 0)
 
-print("Kreismitte: " + str(center))
-points = generate_circle(center=center, r=(x_max[0]+y_max[0]), n=lange*25+1)
-for x,y,z in points:
-    x_cam.append(x)
-    y_cam.append(z)
-    z_cam.append(y)
+    print("Kreismitte: " + str(center))
+    points = generate_circle(center=center, r=(x_max[0]+y_max[0]), n=lange*25+1)
+    for x,y,z in points:
+        x_cam.append(x)
+        y_cam.append(z)
+        z_cam.append(y)
 
-obj.append(LightSource( [10, 120, -40], 'color', [1.3, 1.3, 1.3]))
-obj.append(Background("color", [1,1,1]))
+    obj.append(LightSource( [10, 120, -40], 'color', [1.3, 1.3, 1.3]))
+    obj.append(Background("color", [1,1,1]))
 
-VideoClip(make_frame, duration=lange).write_gif("animation.gif",fps=25)
-size = convert_bytes(os.stat("animation.gif").st_size)
-print("Filesize: " + size)
+    VideoClip(make_frame, duration=lange).write_gif("animation.gif",fps=25)
+    size = convert_bytes(os.stat("animation.gif").st_size)
+    print("Filesize: " + size)
 
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
 api = tweepy.API(auth)
-api.update_with_media("animation.gif", name)
+
+running = True
+
+while running:
+    print("Listening Tweets...")
+    tweets = api.search(q="@AlkanPlotter")
+    for tweet in tweets:
+        print("Tweet: " + str(tweet))
+        if "@AlkanPlotter" in tweet.text:
+            user = tweet.user.screen_name
+            #Entferne Username und Leerzeichen
+            name = tweet.text.replace(tweet.user.screen_name, "").replace(" ", "")
+            print("Name von Twitter: " + str(name))
+            plot(name)
+            api.update_with_media("animation.gif", name)
+            running = False
