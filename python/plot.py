@@ -25,6 +25,9 @@ def nameToJSON(name):
     os.system('stack build')
     HSdata = os.popen("stack exec create n '" + str(name) + "'").read()
     print("HS Data: " + str(HSdata))
+    if(HSdata == ""):
+        print("Fehlerhafter Name")
+        return False
     os.chdir('../python')
     try:
         return json.loads(HSdata)
@@ -103,8 +106,7 @@ def direct(datasize, length, shrink, empty, i, x, y, z):
             empty = 0 #2
     return [x_new, y_new, len_new, empty]
 
-def plot(name):
-    data = nameToJSON(name)
+def plot(data):
     print("Data: " + str(data))
     render(data, 15, 10, -1, 0, 0, 0)
     print("X max: " + str(x_max[0]) + ", Y max: " + str(y_max[0]))
@@ -141,6 +143,7 @@ while running:
             #Entferne Username und Leerzeichen
             name = tweet.text.replace("@AlkanPlotter", "").replace(" ", "")
             print("Name von Twitter: " + str(name))
-            plot(name)
+            data = nameToJSON(name)
+            plot(data)
             api.update_with_media("animation.gif", name)
             running = False
