@@ -22,10 +22,14 @@ def backend(len, dep):
 def nameToJSON(name):
     os.chdir('../HcPlot-hs')
     os.system('stack build')
-    data = os.popen('stack exec create n ' + str(name))
+    HSdata = os.popen('stack exec create n ' + str(name))
     print("HS Data: " + str(data))
     os.chdir('../python')
-    return json.loads(data)
+    try:
+        return json.loads(HSData)
+    except TypeError:
+        print("Fehlerhafte JSON")
+        return False
 
 #data = backend(5, 2)
 data = nameToJSON("1,2-dimethyl-hexan")
