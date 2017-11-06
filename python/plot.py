@@ -10,6 +10,7 @@ from math import pi
 from credentials import *
 from convertBytes import convert_bytes
 
+name = "3-(4-henethyl-decyl)-dodecan"
 
 def backend(len, dep):
     os.chdir('../HcPlot-hs')
@@ -32,7 +33,7 @@ def nameToJSON(name):
         return False
 
 #data = backend(5, 2)
-data = nameToJSON("1,2-dimethyl-hexan")
+data = nameToJSON(name)
 print("Data: " + str(data))
 
 lange = 3 #sek. Länge der gif !!! must be int !!!
@@ -125,4 +126,4 @@ print("Filesize: " + size)
 auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
 auth.set_access_token(access_token, access_token_secret)
 api = tweepy.API(auth)
-api.update_with_media("animation.gif", "Es fehlt noch: Name und Randomness")
+api.update_with_media("animation.gif", name)
