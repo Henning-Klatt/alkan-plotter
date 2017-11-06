@@ -49,7 +49,7 @@ x_min = [0]
 y_max = [0]
 y_min = [0]
 
-def make_scene(t):
+def make_scene(t, center):
     #camera = Camera( 'location', [t*50,20,-((x_max[0]+y_max[0])/1.25)], 'look_at', [x_max[0]/2,0,0])
     t = int(t*25)
     camera = Camera( 'location', [x_cam[t],y_cam[t],z_cam[t]], 'look_at', center)
