@@ -24,10 +24,7 @@ def nameToJSON(name):
     os.system('stack build')
     data = os.popen('stack exec n ' + name)
     os.chdir('../python')
-    try:
-        x = json.loads(data)
-    except:
-        os.exit(1)
+    return json.loads(data)
 
 #data = backend(5, 2)
 data = nameToJSON("1,2-dimethyl-hexan")
