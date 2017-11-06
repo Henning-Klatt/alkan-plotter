@@ -29,7 +29,8 @@ def nameToJSON(name):
     except:
         os.exit(1)
 
-data = backend(5, 2)
+#data = backend(5, 2)
+data = nameToJSON("1,2-dimethyl-hexan")
 print("Data: " + str(data))
 
 lange = 3 #sek. Länge der gif !!! must be int !!!
