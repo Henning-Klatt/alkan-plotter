@@ -22,7 +22,7 @@ def backend(len, dep):
 def nameToJSON(name):
     os.chdir('../HcPlot-hs')
     os.system('stack build')
-    data = os.popen('stack exec create n ' + name)
+    data = os.popen('stack exec create n ' + str(name))
     print("HS Data: " + str(data))
     os.chdir('../python')
     return json.loads(data)
