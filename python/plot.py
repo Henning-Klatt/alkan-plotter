@@ -144,6 +144,9 @@ while running:
             name = tweet.text.replace("@AlkanPlotter", "").replace(" ", "")
             print("Name von Twitter: " + str(name))
             data = nameToJSON(name)
-            plot(data)
-            api.update_with_media("animation.gif", name)
-            running = False
+            if(data):
+                plot(data)
+                api.update_with_media("animation.gif", name)
+                running = False
+            else:
+                print("Tweet ungültig!")
