@@ -1,16 +1,18 @@
 #!/usr/bin/env python3
 # coding: utf8
+# encoding=utf8
 from vapory import *
 from moviepy.editor import VideoClip
 import json
 import tweepy
 import numpy as np
-import math, os, time
+import math, os, time, sys
 from math import pi
 from credentials import *
 from convertBytes import convert_bytes
 
-name = "3-(4-henethyl-decyl)-dodecan"
+reload(sys)
+sys.setdefaultencoding('utf8')
 
 def backend(len, dep):
     os.chdir('../HcPlot-hs')
@@ -137,7 +139,6 @@ while running:
     print("Listening Tweets...")
     tweets = api.search(q="@AlkanPlotter")
     for tweet in tweets:
-        print("Tweet: " + str(tweet))
         if "@AlkanPlotter" in tweet.text:
             user = tweet.user.screen_name
             #Entferne Username und Leerzeichen
