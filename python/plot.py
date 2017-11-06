@@ -139,7 +139,7 @@ while running:
         if "@AlkanPlotter" in tweet.text:
             user = tweet.user.screen_name
             #Entferne Username und Leerzeichen
-            name = tweet.text.replace(tweet.user.screen_name, "").replace(" ", "")
+            name = tweet.text.replace("@AlkanPlotter", "").replace(" ", "")
             print("Name von Twitter: " + str(name))
             plot(name)
             api.update_with_media("animation.gif", name)
