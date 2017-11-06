@@ -11,7 +11,6 @@ from math import pi
 from credentials import *
 from convertBytes import convert_bytes
 
-reload(sys)
 sys.setdefaultencoding('utf8')
 
 def backend(len, dep):
