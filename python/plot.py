@@ -108,7 +108,7 @@ def direct(datasize, length, shrink, empty, i, x, y, z):
             empty = 0 #2
     return [x_new, y_new, len_new, empty]
 
-def plot(data):
+def plot(data, animation):
     print("Data: " + str(data))
     render(data, 15, 10, -1, 0, 0, 0)
     print("X max: " + str(x_max[0]) + ", Y max: " + str(y_max[0]))
@@ -116,39 +116,50 @@ def plot(data):
     center = ((x_max[0]+x_min[0])/2, (y_max[0]+y_min[0])/2, 0)
 
     print("Kreismitte: " + str(center))
-    points = generate_circle(center=center, r=(x_max[0]+y_max[0]), n=lange*25+1)
-    for x,y,z in points:
-        x_cam.append(x)
-        y_cam.append(z)
-        z_cam.append(y)
 
     obj.append(LightSource( [10, 120, -40], 'color', [1.3, 1.3, 1.3]))
     obj.append(Background("color", [1,1,1]))
 
-    VideoClip(make_frame, duration=lange).write_gif("animation.gif",fps=25)
-    size = convert_bytes(os.stat("animation.gif").st_size)
-    print("Filesize: " + size)
+    if(animation):
+        points = generate_circle(center=center, r=(x_max[0]+y_max[0]), n=lange*25+1)
+        for x,y,z in points:
+            x_cam.append(x)
+            y_cam.append(z)
+            z_cam.append(y)
 
-auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
-auth.set_access_token(access_token, access_token_secret)
-api = tweepy.API(auth)
+        VideoClip(make_frame, duration=lange).write_gif("animation.gif",fps=25)
+        size = convert_bytes(os.stat("animation.gif").st_size)
+
+    else:
+        camera = Camera( 'location', [0,0,-50], 'look_at', center)
+        scene = Scene( camera, objects= obj, included=["glass.inc"])
+        scene.render("image.png", width=1024, height=512)
+        size = convert_bytes(os.stat("image.png").st_size)
+
+    print("Filesize: " + size)
 
 running = True
 
-while running:
-    print("Listening Tweets...")
-    tweets = api.search(q="@AlkanPlotter")
-    for tweet in tweets:
-        if "@AlkanPlotter" in tweet.text:
-            user = tweet.user.screen_name
-            #Entferne Username und Leerzeichen
-            name = tweet.text.replace("@AlkanPlotter", "").replace(" ", "")
-            print("Name von Twitter: " + str(name))
-            data = nameToJSON(name)
-            if(data):
-                plot(data)
-                tweet = api.update_with_media("animation.gif", "@" + user + " " + name, in_reply_to_status_id = tweet.id)
-                running = False
-            else:
-                print("Tweet ungultig!")
-                running = False
+if __name__ == "__main__":
+
+    auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
+    auth.set_access_token(access_token, access_token_secret)
+    api = tweepy.API(auth)
+
+    while running:
+        print("Listening Tweets...")
+        tweets = api.search(q="@AlkanPlotter")
+        for tweet in tweets:
+            if "@AlkanPlotter" in tweet.text:
+                user = tweet.user.screen_name
+                #Entferne Username und Leerzeichen
+                name = tweet.text.replace("@AlkanPlotter", "").replace(" ", "")
+                print("Name von Twitter: " + str(name))
+                data = nameToJSON(name)
+                if(data):
+                    plot(data)
+                    tweet = api.update_with_media("animation.gif", "@" + user + " " + name, in_reply_to_status_id = tweet.id)
+                    running = False
+                else:
+                    print("Tweet ungultig!")
+                    running = False
