@@ -130,7 +130,7 @@ def plot(data, animation):
         size = convert_bytes(os.stat("animation.gif").st_size)
 
     else:
-        camera = Camera( 'location', [center[0],center[1],-center[2]*2], 'look_at', center)
+        camera = Camera( 'location', [center[0],center[1],-(x_max[0]+y_max[0])], 'look_at', center)
         scene = Scene( camera, objects= obj, included=["glass.inc"])
         scene.render("image.png", width=1024, height=512)
         size = convert_bytes(os.stat("image.png").st_size)
