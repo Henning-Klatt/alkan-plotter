@@ -2,13 +2,11 @@
 # coding: utf8
 # encoding=utf8
 from vapory import *
-from moviepy.editor import VideoClip
 import json
-import tweepy
 import numpy as np
 import math, os, time, sys
 from math import pi
-from credentials import *
+
 from convertBytes import convert_bytes
 
 #sys.setdefaultencoding('utf8')
@@ -121,6 +119,7 @@ def plot(data, animation):
     obj.append(Background("color", [1,1,1]))
 
     if(animation):
+        from moviepy.editor import VideoClip
         points = generate_circle(center=center, r=(x_max[0]+y_max[0]), n=lange*25+1)
         for x,y,z in points:
             x_cam.append(x)
@@ -141,6 +140,9 @@ def plot(data, animation):
 running = True
 
 if __name__ == "__main__":
+
+    from credentials import *
+    import tweepy
 
     auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
     auth.set_access_token(access_token, access_token_secret)
