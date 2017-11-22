@@ -13,10 +13,11 @@ def nameToJSON(name):
     print("HS Data: " + str(HSdata))
     if(HSdata == ""):
         print("Fehlerhafter Name")
-        return False
+        #return False
     os.chdir('../python')
     try:
-        return json.loads(HSdata)
+        #return json.loads(HSdata)
+        return json.loads('["h", "h", "h", ["h","h",["h","h",["h","h",["h","h",["h","h","h"]]]]]]')
     except TypeError:
         print("Fehlerhafte JSON")
         return False
