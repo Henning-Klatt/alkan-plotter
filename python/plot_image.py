@@ -3,8 +3,8 @@
 # encoding=utf8
 import os
 import json
-
 from plot import plot
+
 
 def nameToJSON(name):
     os.chdir('../HcPlot-hs')
